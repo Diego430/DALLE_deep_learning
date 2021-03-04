@@ -58,6 +58,8 @@ print("Start")
 
 DEVICE = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 
+if not os.path.exists(GENERATED_IMAGES_DIR_PATH) :
+	os.mkdir(GENERATED_IMAGES_DIR_PATH)
 
 image_transformer = transforms.Compose([
 	transforms.Resize((IMAGE_SIZE, IMAGE_SIZE)),
