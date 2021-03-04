@@ -51,7 +51,7 @@ DALLE_ATTN_DROPOUT = 0.1  # attention dropout
 DALLE_FF_DROPOUT = 0.1  # feedforward dropout
 
 # to continue training from a saved checkpoint, give checkpoint path as toLoadDALLE and START_EPOCH
-START_EPOCH = 50
+START_EPOCH = 0
 START_IMAGE = 0
 NAME = "rainbow_v3dalle"  # experiment NAME
 TO_LOAD_DALLE = MODELS_DIR_PATH + "/" + NAME + "_dalle_" + str(START_EPOCH) + "_" + str(

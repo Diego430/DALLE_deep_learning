@@ -32,7 +32,7 @@ CODEBOOK_DIM = 256  # codebook dimension
 HIDDEN_DIM = 128  # hidden dimension
 
 # LOG params
-LOG_INTERVAL = 100  # status print interval
+LOG_INTERVAL = 1000  # status print interval
 VERBOSE = True
 NUM_WORKERS = 0  # number of concurrent process that load the dataset
 RESULT_ROWS = 6  # = number of images % batch size
@@ -40,7 +40,7 @@ RESULT_ROWS = 6  # = number of images % batch size
 # Continuing training
 # set toLoadDict: path to pretrained model
 # START_EPOCH: start epoch numbering from this
-START_EPOCH = 99  # start epoch numbering for continuing training (default: 0)')
+START_EPOCH = 0  # start epoch numbering for continuing training (default: 0)')
 TO_LOAD_DICT = MODELS_DIR_PATH + NAME + "-" + str(START_EPOCH) + ".pth" if START_EPOCH != 0 else ''
 
 if VERBOSE :
