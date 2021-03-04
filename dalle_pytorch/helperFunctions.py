@@ -1,5 +1,7 @@
 from inspect import isfunction
+
 import torch
+
 
 # helpers
 def exists(val):

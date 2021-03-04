@@ -5,9 +5,8 @@ from torch import nn
 from .Attention import Attention
 from .FeedForward import FeedForward
 from .PreNorm import PreNorm
-from .SparseAttention import SparseAttention
-from .helperFunctions import *
 from .SequentialSequence import SequentialSequence
+from .helperFunctions import *
 
 
 class Transformer(nn.Module) :
@@ -25,14 +24,13 @@ class Transformer(nn.Module) :
 			ff_dropout = 0.,
 			noncausal_attn_len = 0,
 			sparse_attn = False,
-			sparse_attn_global_indices = []
 	) :
 		super().__init__()
 		layers = nn.ModuleList([])
 		sparse_layer = cast_tuple(sparse_attn, depth)
 
 		for _, sparse_attn in zip(range(depth), sparse_layer) :
-			attn_class = Attention if not sparse_attn else partial(SparseAttention, sparse_attn_global_indices=sparse_attn_global_indices)
+			attn_class = Attention
 
 			layers.append(nn.ModuleList([
 				PreNorm(dim, attn_class(dim, causal=causal, seq_len=seq_len, heads=heads, dim_head=dim_head,

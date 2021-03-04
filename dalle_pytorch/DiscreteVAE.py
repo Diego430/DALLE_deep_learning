@@ -23,7 +23,6 @@ class DiscreteVAE(nn.Module):
         TEMPERATURE=0.9,  # gumbel softmax TEMPERATURE, the lower this is, the harder the discretization
 
     """
-    # costruttore
     def __init__(
             self,
             image_size=256,
@@ -40,14 +39,12 @@ class DiscreteVAE(nn.Module):
         assert num_layers >= 1, 'number of layers must be greater than or equal to 1'
         has_resblocks = num_resnet_blocks > 0
 
-        # passo i parametri alle variabili
+        # params
         self.image_size = image_size
         self.num_tokens = image_codebook_size
         self.num_layers = num_layers
         self.temperature = temperature
         self.codebook = nn.Embedding(image_codebook_size, codebook_dim)
-
-        hdim = hidden_dim
 
         # create encoder e decoder channels
         enc_channels = [hidden_dim] * num_layers
@@ -74,7 +71,7 @@ class DiscreteVAE(nn.Module):
             enc_layers.append(nn.Sequential(nn.Conv2d(enc_in, enc_out, 4, stride=2, padding=1), nn.ReLU()))
             dec_layers.append(nn.Sequential(nn.ConvTranspose2d(dec_in, dec_out, 4, stride=2, padding=1), nn.ReLU()))
 
-        # inser resnet block, for the decoder in the head, for the encoder in the tail
+        # insert resnet block, for the decoder in the head, for the encoder in the tail
         for _ in range(num_resnet_blocks):
             dec_layers.insert(0, ResBlock(dec_channels[1]))
             enc_layers.append(ResBlock(enc_channels[-1]))
@@ -88,14 +85,14 @@ class DiscreteVAE(nn.Module):
         self.encoder = nn.Sequential(*enc_layers)
         self.decoder = nn.Sequential(*dec_layers)
 
-    # cerca di adattare i logits trovati ai token nel codebook usando la best fit
+    # adapt logits to tokens in codebook using best fit
     @torch.no_grad()
     def get_codebook_indices(self, images):
         logits = self.forward(images, return_logits=True)
         codebook_indices = logits.argmax(dim=1).flatten(1)
         return codebook_indices
 
-    # decodifica dell'immagine passata come param
+    # decode param image
     def decode(
             self,
             img_seq
@@ -108,7 +105,7 @@ class DiscreteVAE(nn.Module):
         images = self.decoder(image_embeds)
         return images
 
-    # passo di forward su img
+    # forward over img
     def forward(
             self,
             img,
@@ -124,10 +121,8 @@ class DiscreteVAE(nn.Module):
         sampled = einsum('b n h w, n d -> b d h w', soft_one_hot, self.codebook.weight)
         out = self.decoder(sampled)
 
-        # se non viene richiesta la loss in output ritorno il risultato del decoder
         if not return_recon_loss:
             return out
 
-        # calcolo mean squared error del img per ritornarla se richiesta
         loss = F.mse_loss(img, out)
         return loss

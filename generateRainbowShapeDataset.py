@@ -1,14 +1,13 @@
-import math
 import itertools
+import math
 import os
 
-import numpy as np
 import cairo
-import matplotlib.pyplot as plt
 import matplotlib.colors as mcolors
+import matplotlib.pyplot as plt
+import numpy as np
 from PIL import Image
-from tqdm.autonotebook import tqdm, trange
-
+from tqdm.autonotebook import tqdm
 
 DATA_PATH = "./data"  # path to imageFolder
 RAINBOW_DATA_PATH = "./data/rainbow"

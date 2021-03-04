@@ -1,16 +1,14 @@
 import os
 
 import torch
+import torch.optim as optim
 import torchvision.transforms as transforms
 from torchvision import datasets
-import torch.optim as optim
-
-from dalle_pytorch.DiscreteVAE import DiscreteVAE
-from dalle_pytorch.DALLE import DALLE
-from dalle_pytorch.Vocabulary import Vocabulary
-
 from torchvision.utils import save_image
 
+from dalle_pytorch.DALLE import DALLE
+from dalle_pytorch.DiscreteVAE import DiscreteVAE
+from dalle_pytorch.Vocabulary import Vocabulary
 
 # FILE NAMES
 RESULTS_DIR_PATH = "./results"

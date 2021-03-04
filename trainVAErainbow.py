@@ -1,13 +1,12 @@
 import torch
 import torch.nn.functional as F
-from torch import optim
-from torchvision import datasets
-from torch.utils.data import DataLoader
-from torchvision.utils import save_image
 import torchvision.transforms as transforms
+from torch import optim
+from torch.utils.data import DataLoader
+from torchvision import datasets
+from torchvision.utils import save_image
 
 from dalle_pytorch.DiscreteVAE import DiscreteVAE
-
 
 # FILE NAMES
 RESULTS_DIR_PATH = "./results"
