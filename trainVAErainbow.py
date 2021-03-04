@@ -8,6 +8,13 @@ import torchvision.transforms as transforms
 
 from dalle_pytorch.DiscreteVAE import DiscreteVAE
 
+
+# FILE NAMES
+RESULTS_DIR_PATH = "./results"
+MODELS_DIR_PATH = "./models"
+VAE_LOSS_LOGFILE = "lossPerEpochVAE.csv"
+
+# EXEC params
 BATCH_SIZE = 8  # batch size for training
 DATA_PATH = "./data"  # path to imageFolder
 IMAGE_SIZE = 32  # image size for training
@@ -34,7 +41,7 @@ RESULT_ROWS = 6  # = number of images % batch size
 # set toLoadDict: path to pretrained model
 # START_EPOCH: start epoch numbering from this
 START_EPOCH = 99  # start epoch numbering for continuing training (default: 0)')
-TO_LOAD_DICT = "./models/" + NAME + "-" + str(START_EPOCH) + ".pth" if START_EPOCH != 0 else ''
+TO_LOAD_DICT = MODELS_DIR_PATH + NAME + "-" + str(START_EPOCH) + ".pth" if START_EPOCH != 0 else ''
 
 if VERBOSE :
 	print("Start")
@@ -121,16 +128,15 @@ if __name__ == "__main__" :
 		grid = torch.cat([images[:RESULT_ROWS], recons[:RESULT_ROWS], decodedImage[:RESULT_ROWS]])
 
 		# for each epoch save results and state of the dict
-		image_file_path = 'results/' + NAME + '_epoch_' + str(epoch) + '.png'
+		image_file_path = RESULTS_DIR_PATH + '/' + NAME + '_epoch_' + str(epoch) + '.png'
 		save_image(grid, image_file_path, normalize=True, nrow=RESULT_ROWS)
 
-		print('====> Epoch: {} Average loss: {:.8f}'.format(
-			epoch, train_loss / MAX_DATASET_ELEMENTS))
+		print('====> Epoch: {} Average loss: {:.8f}'.format(epoch, train_loss / MAX_DATASET_ELEMENTS))
 
-		vae_filename = "./models/" + NAME + "-" + str(epoch + 1) + ".pth"
+		vae_filename = MODELS_DIR_PATH + '/' + NAME + "-" + str(epoch + 1) + ".pth"
 		torch.save(vae.state_dict(), vae_filename)
 
 		# log for the loss
-		toWriteLoss = open("lossPerEpoch.csv", "a")
+		toWriteLoss = open(VAE_LOSS_LOGFILE, "a")
 		toWriteLoss.write("\n{}, {}".format(epoch, train_loss / MAX_DATASET_ELEMENTS))
 		toWriteLoss.close()

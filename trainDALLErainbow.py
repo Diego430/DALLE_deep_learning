@@ -11,9 +11,16 @@ from dalle_pytorch.Vocabulary import Vocabulary
 
 from torchvision.utils import save_image
 
+
+# FILE NAMES
+RESULTS_DIR_PATH = "./results"
+MODELS_DIR_PATH = "./models"
+DALLE_LOSS_LOGFILE = "lossPerEpochDALLE.csv"
+DATA_PATH = "./data"  # path to imageFolder
+RAINBOW_DATA_PATH = "./data/rainbow"
+
 # EXEC params
 BATCH_SIZE = 256  # batch size for training
-DATA_PATH = "./data"  # path to imageFolder
 IMAGE_SIZE = 32  # image size for training
 N_EPOCHS = 250  # number of epochs
 LEARNING_RATE = 1e-4  # learning rate
@@ -46,8 +53,8 @@ DALLE_FF_DROPOUT = 0.1  # feedforward dropout
 # to continue training from a saved checkpoint, give checkpoint path as toLoadDALLE and START_EPOCH
 START_EPOCH = 50
 START_IMAGE = 0
-name = "rainbow_v3dalle"  # experiment NAME
-to_load_DALLE = "./models/" + name + "_dalle_" + str(START_EPOCH) + "_" + str(
+NAME = "rainbow_v3dalle"  # experiment NAME
+TO_LOAD_DALLE = MODELS_DIR_PATH + "/" + NAME + "_dalle_" + str(START_EPOCH) + "_" + str(
 	START_IMAGE) + ".pth" if START_EPOCH != 0 and START_IMAGE != 0 else ''
 
 print("Start")
@@ -68,11 +75,17 @@ if MAX_DATASET_ELEMENTS == -1 :
 if LOG_INTERVAL == -1 :
 	LOG_INTERVAL = MAX_DATASET_ELEMENTS
 
+if not os.path.exists(RESULTS_DIR_PATH) :
+	os.mkdir(RESULTS_DIR_PATH)
+
+if not os.path.exists(MODELS_DIR_PATH) :
+	os.mkdir(MODELS_DIR_PATH)
+
 # Build vocabulary
 print("Build Vocabulary...")
 vocab = Vocabulary("captions")
 vocab_dataset_element = 0
-filenames = os.listdir(DATA_PATH + "/rainbow")
+filenames = os.listdir(RAINBOW_DATA_PATH)
 captions = [filename.replace(".png", '').replace('_', ' ') for filename in filenames]
 for caption in captions :
 	vocab.add_sentence(caption)
@@ -93,7 +106,7 @@ vae = DiscreteVAE(
 )
 
 # Load pretrained vae
-vae_path = "./models/" + VAE_NAME + "-" + str(VAE_LOAD_EPOCH) + ".pth"
+vae_path = MODELS_DIR_PATH + "/" + VAE_NAME + "-" + str(VAE_LOAD_EPOCH) + ".pth"
 print("loading VAE from " + vae_path)
 vae_dict = torch.load(vae_path)
 vae.load_state_dict(vae_dict)
@@ -112,8 +125,8 @@ dalle = DALLE(
 )
 
 # load pretrained dalle if continuing training
-if to_load_DALLE != "" :
-	dalle_dict = torch.load(to_load_DALLE)
+if TO_LOAD_DALLE != "" :
+	dalle_dict = torch.load(TO_LOAD_DALLE)
 	dalle.load_state_dict(dalle_dict)
 
 dalle.to(DEVICE)
@@ -155,22 +168,22 @@ for epoch in range(START_EPOCH, N_EPOCHS) :
 				percentage = 100. * batch_index / MAX_DATASET_ELEMENTS
 				print('Train Epoch: {} [{}/{} ({:.0f}%)]\tLoss: {:.6f}'.format(
 					epoch, batch_index, MAX_DATASET_ELEMENTS, percentage, train_loss / (batch_index + 1)))
-				dalle_state_filename = "./models/" + name + "_dalle_" + str(epoch + 1) + "_" + str(batch_index) + ".pth"
+				dalle_state_filename = MODELS_DIR_PATH + "/" + NAME + "_dalle_" + str(epoch + 1) + "_" + str(batch_index) + ".pth"
 				torch.save(dalle.state_dict(), dalle_state_filename)
 				# log for the loss
-				toWriteLoss = open("lossPerEpochDALLE.csv", "a")
-				toWriteLoss.write("\n{}, {}, {}".format(epoch, batch_index, train_loss / (batch_index + 1)))
-				toWriteLoss.close()
+				to_write_loss = open(DALLE_LOSS_LOGFILE, "a")
+				to_write_loss.write("\n{}, {}, {}".format(epoch, batch_index, train_loss / (batch_index + 1)))
+				to_write_loss.close()
 		if batch_index + 1 >= MAX_DATASET_ELEMENTS :
 			break
 		batch_index += 1
 
 	print('====> Epoch: {} Average loss: {:.4f}'.format(epoch, train_loss / MAX_DATASET_ELEMENTS))
-	toWriteLoss = open("lossPerEpochDALLE.csv", "a")
-	toWriteLoss.write("\n{}, {}, {}".format(epoch, -1, train_loss / MAX_DATASET_ELEMENTS))
-	toWriteLoss.close()
+	to_write_loss = open("lossPerEpochDALLE.csv", "a")
+	to_write_loss.write("\n{}, {}, {}".format(epoch, -1, train_loss / MAX_DATASET_ELEMENTS))
+	to_write_loss.close()
 
-	torch.save(dalle.state_dict(), "./models/" + name + "_dalle_" + str(epoch + 1) + ".pth")
+	torch.save(dalle.state_dict(), MODELS_DIR_PATH + '/' + NAME + "_dalle_" + str(epoch + 1) + ".pth")
 
 	# generate a test sample from the captions in the last minibatch
 	text_string = []
@@ -178,5 +191,5 @@ for epoch in range(START_EPOCH, N_EPOCHS) :
 		text_string.append(dalle.vocabulary.to_word(word.item()))
 	print(text_string)
 	image_generated = dalle.generate_images(text, mask=mask)
-	save_image(image_generated, 'results/' + name + '_dalle_epoch_' + str(epoch) + '.png', normalize=True)
+	save_image(image_generated, RESULTS_DIR_PATH + '/' + NAME + '_dalle_epoch_' + str(epoch) + '.png', normalize=True)
 	START_IMAGE = 0

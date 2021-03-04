@@ -12,9 +12,15 @@ from dalle_pytorch.Vocabulary import Vocabulary
 from torchvision.utils import save_image
 
 
+# FILE NAMES
+RESULTS_DIR_PATH = "./results"
+MODELS_DIR_PATH = "./models"
+GENERATED_IMAGES_DIR_PATH = './generated_images'
+DATA_PATH = "./data"  # path to imageFolder
+RAINBOW_DATA_PATH = "./data/rainbow"
+
 # EXEC params
 BATCH_SIZE = 128  # batch size for training
-DATA_PATH = "./data"  # path to imageFolder
 IMAGE_SIZE = 32  # image size for training
 N_EPOCHS = 100  # number of epochs
 LEARNING_RATE = 1e-4  # learning rate
@@ -71,7 +77,7 @@ if MAX_DATASET_ELEMENTS == -1 :
 print("Build Vocabulary...")
 vocab = Vocabulary("captions")
 vocab_dataset_element = 0
-filenames = os.listdir(DATA_PATH + "/rainbow")
+filenames = os.listdir(RAINBOW_DATA_PATH)
 captions = [filename.replace(".png", '').replace('_', ' ') for filename in filenames]
 for caption in captions :
 	vocab.add_sentence(caption)
@@ -92,7 +98,7 @@ vae = DiscreteVAE(
 )
 
 # Load pretrained vae
-vae_path = "./models/" + VAE_NAME + "-" + str(VAE_LOAD_EPOCH) + ".pth"
+vae_path = MODELS_DIR_PATH + '/' + VAE_NAME + "-" + str(VAE_LOAD_EPOCH) + ".pth"
 print("loading VAE from " + vae_path)
 vae_dict = torch.load(vae_path)
 vae.load_state_dict(vae_dict)
@@ -164,5 +170,5 @@ for caption in captions:
 	print(text_string)
 	print("Generating image based on: " + caption)
 	image_generated = dalle.generate_images(caption_codes, mask=mask)
-	image_filename = 'generated_images/' + caption.replace(' ', '_') + '_' + NAME + '_' + '.png'
+	image_filename = GENERATED_IMAGES_DIR_PATH + '/' + caption.replace(' ', '_') + '_' + NAME + '_' + '.png'
 	save_image(image_generated, image_filename, normalize=True)

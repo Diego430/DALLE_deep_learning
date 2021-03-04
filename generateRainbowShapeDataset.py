@@ -9,6 +9,10 @@ import matplotlib.colors as mcolors
 from PIL import Image
 from tqdm.autonotebook import tqdm, trange
 
+
+DATA_PATH = "./data"  # path to imageFolder
+RAINBOW_DATA_PATH = "./data/rainbow"
+
 rainbow_colors = ["red", "orange", "yellow", "green", "blue", "indigo", "violet"]
 rainbow_rgb = [np.array(mcolors.to_rgb(name)) * 255 for name in rainbow_colors]
 
@@ -175,14 +179,14 @@ plt.axis("off")
 plt.imshow(pics)
 
 all_variations = list(itertools.product(*[v.items() for v in variations.values()]))
-if not os.path.exists("data") :
-	os.mkdir("data")
+if not os.path.exists(DATA_PATH) :
+	os.mkdir(DATA_PATH)
 
-if not os.path.exists("data/rainbow") :
-	os.mkdir("data/rainbow")
+if not os.path.exists(RAINBOW_DATA_PATH) :
+	os.mkdir(RAINBOW_DATA_PATH)
 	for vars in tqdm(all_variations) :
 		name = " ".join(n for n, v in vars if n != "").replace(" ", "_")
 		params = dict(zip(variations, [v for n, v in vars]))
 		pic = make_pic(32, **params)[:, :, :3]
 		im = Image.fromarray(pic)
-		im.save(f"data/rainbow/{name}.png")
+		im.save(RAINBOW_DATA_PATH + '/' + name + ".png")
