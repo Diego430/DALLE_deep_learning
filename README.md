@@ -70,4 +70,4 @@ Modify CAPTIONS content to select what shape DALLE as to generate.
 
 With this implementation I've managed to train a DALLE model that generated this images:
 
-<img src="./generated_images/big_black_circle_rainbow_v3dalle_.png"></img>
+![](./generated_images/big_black_circle_rainbow_v3dalle_.png =250x)
