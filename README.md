@@ -73,7 +73,7 @@ With this implementation I've managed to train a DALLE model that generated this
 * big black circle
   
 <img src="./generated_images/big_black_circle_rainbow_v3dalle_.png" width=200 title="big black circle"></img>
-* red hexagon rainbow
+* filled green star
   
 <img src="./generated_images/filled_green_star_rainbow_v3dalle_.png" width=200 title="filled green star"></img>
 * red hexagon rainbow
