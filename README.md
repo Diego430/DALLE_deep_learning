@@ -82,3 +82,10 @@ With this implementation I've managed to train a DALLE model that generated this
 * smaller yellow triangle rotated twice
   
 <img src="./generated_images/smaller_yellow_triangle_rotated_twice_rainbow_v3dalle_.png" width=200 title="smaller yellow triangle rotated twice"></img>
+
+| big black circle  | filled green star | red hexagon rainbow | smaller yellow triangle rotated twice |
+| ------------- | ------------- | ------------- | ------------- |
+| <img src="./generated_images/big_black_circle_rainbow_v3dalle_.png" width=200 title="big black circle"></img>  | <img src="./generated_images/filled_green_star_rainbow_v3dalle_.png" width=200 title="filled green star"></img>  | 
+<img src="./generated_images/red_hexagon_rainbow_v3dalle_.png" width=200 title="red hexagon rainbow"></img> | 
+<img src="./generated_images/smaller_yellow_triangle_rotated_twice_rainbow_v3dalle_.png" width=200 title="smaller yellow triangle rotated twice"></img> |
+
