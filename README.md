@@ -40,6 +40,21 @@ DATA_PATH = "./data"
 RAINBOW_DATA_PATH = "./data/rainbow"
 ```
 
+The possible variation that can be generated are these:
+```python
+variations = {
+	"scale" : {"big" : 1, "bigger" : 0.8, "smaller" : 0.6, "small" : 0.4},
+	"fill" : {"filled" : True, "" : False},
+	"ditherer" : {"" : dither_solid, "shaded" : dither_shaded, "halftone" : dither_halftone},
+	"color_name" : {c : c for c in rainbow_colors + ["cyan", "saddlebrown", "black", "gray", "rainbow"]},
+	"shape_maker" : {"circle" : circle_maker, "triangle" : triangle_maker, "square" : square_maker,
+					"rhombus" : rhombus_maker, "rectangle" : rectangle_maker, "star" : star_maker,
+					"hexagon" : hexagon_maker,
+					"crescent" : crescent_maker},
+	"rotation" : {"" : 0, "rotated clockwise" : 1, "rotated twice" : 2, "rotated counterclockwise" : 3},
+}
+```
+
 ### Training
 
 Regarding the training of all the components both trainVAErainbow.py and trainDALLErainbow.py 
