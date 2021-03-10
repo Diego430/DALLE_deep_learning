@@ -40,7 +40,7 @@ DATA_PATH = "./data"
 RAINBOW_DATA_PATH = "./data/rainbow"
 ```
 
-###Training
+### Training
 
 Regarding the training of all the components both trainVAErainbow.py and trainDALLErainbow.py 
 starts with the declaration of the constant that tune the execution of the training.
@@ -66,7 +66,7 @@ Modify CAPTIONS content to select what shape DALLE as to generate.
    python generateRainbowShapeDataset.py
 ```
 
-##Results
+## Results
 
 With this implementation I've managed to train a DALLE model that generated this images:
 
