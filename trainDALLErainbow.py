@@ -22,12 +22,11 @@ BATCH_SIZE = 256  # batch size for training
 IMAGE_SIZE = 32  # image size for training
 N_EPOCHS = 250  # number of epochs
 LEARNING_RATE = 1e-4  # learning rate
-TEMPERATURE = 0.9  # vae TEMPERATURE
 MAX_DATASET_ELEMENTS = -1
 
 # LOG params
 LOG_INTERVAL = -1  # status print interval
-VERBOSE = True
+VERBOSE = True  # if true the program will print some information about execution
 NUM_WORKERS = 0  # number of concurrent process that load the dataset
 
 # VAE params
@@ -38,6 +37,8 @@ VAE_CODEBOOK_DIM = 256  # codebook dimension
 VAE_HIDDEN_DIM = 128  # hidden dimension
 VAE_NAME = "rainbow_v1vae256"
 VAE_LOAD_EPOCH = 399
+VAE_TEMPERATURE = 0.9  # vae TEMPERATURE
+
 
 # DALLE params
 DALLE_DIM = 256  # 512,
@@ -100,7 +101,7 @@ vae = DiscreteVAE(
 	image_codebook_size=VAE_IMAGE_CODEBOOK_SIZE,
 	codebook_dim=VAE_CODEBOOK_DIM,
 	hidden_dim=VAE_HIDDEN_DIM,
-	temperature=TEMPERATURE
+	temperature=VAE_TEMPERATURE
 )
 
 # Load pretrained vae

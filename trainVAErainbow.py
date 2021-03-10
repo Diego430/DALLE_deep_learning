@@ -19,7 +19,6 @@ DATA_PATH = "./data"  # path to imageFolder
 IMAGE_SIZE = 32  # image size for training
 N_EPOCHS = 300  # number of epochs
 LEARNING_RATE = 1e-4  # learning rate
-TEMPERATURE = 0.9  # vae TEMPERATURE
 NAME = "rainbow_v1vae256"  # experiment NAME
 MAX_DATASET_ELEMENTS = -1
 
@@ -29,10 +28,11 @@ CHANNELS = 3  # encoder channels
 IMAGE_CODEBOOK_SIZE = 2048  # number of visual tokens. in the paper, they used 8192, but could be smaller for downsized projects
 CODEBOOK_DIM = 256  # codebook dimension
 HIDDEN_DIM = 128  # hidden dimension
+TEMPERATURE = 0.9  # vae TEMPERATURE
 
 # LOG params
 LOG_INTERVAL = 1000  # status print interval
-VERBOSE = True
+VERBOSE = True  # if true the program will print some information about execution
 NUM_WORKERS = 0  # number of concurrent process that load the dataset
 RESULT_ROWS = 6  # = number of images % batch size
 

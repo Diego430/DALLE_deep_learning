@@ -9,7 +9,7 @@ import numpy as np
 from PIL import Image
 from tqdm.autonotebook import tqdm
 
-DATA_PATH = "./data"  # path to imageFolder
+DATA_PATH = "./data"
 RAINBOW_DATA_PATH = "./data/rainbow"
 
 rainbow_colors = ["red", "orange", "yellow", "green", "blue", "indigo", "violet"]
