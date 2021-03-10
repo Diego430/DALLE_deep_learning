@@ -26,7 +26,7 @@ suitable for your system if you want to use the GPU for training and generation.
 
 ## Usage
 
-###Dataset generation
+###  Dataset generation
 
 For the creation of the dataset run this command
 ```sh
