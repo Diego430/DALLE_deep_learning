@@ -28,9 +28,9 @@ class Attention(nn.Module) :
 	def forward(self, x, mask = None) :
 		b, n, _, h, device = *x.shape, self.heads, x.device
 		qkv = self.to_qkv(x).chunk(3, dim=-1)
-		q, k, v = map(lambda t : rearrange(t, 'b n (h d) -> b h n d', h=h), qkv)
+		query, key, value = map(lambda t : rearrange(t, 'b n (h d) -> b h n d', h=h), qkv)
 
-		dots = torch.einsum('b h i d, b h j d -> b h i j', q, k) * self.scale
+		dots = torch.einsum('b h i d, b h j d -> b h i j', query, key) * self.scale
 		mask_value = -torch.finfo(dots.dtype).max
 
 		if exists(mask) :
@@ -50,7 +50,7 @@ class Attention(nn.Module) :
 
 		attn = dots.softmax(dim=-1)
 
-		out = torch.einsum('b h i j, b h j d -> b h i d', attn, v)
+		out = torch.einsum('b h i j, b h j d -> b h i d', attn, value)
 		out = rearrange(out, 'b h n d -> b n (h d)')
 		out = self.to_out(out)
 		return out
