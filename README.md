@@ -81,6 +81,9 @@ Modify CAPTIONS content to select what shape DALLE as to generate.
    python generateRainbowShapeDataset.py
 ```
 
+For both DALLE and VAE training is created a csv file where for each log_interval is written the loss regarding that particular iteration.
+This allows to check the loss value during every iteration if it is done unsupervised and to better understand how fast the loss decreases. 
+
 ## Results
 
 With this implementation I've managed to train a DALLE model that generated this images:
